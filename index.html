@@ -87,6 +87,9 @@
     "https://" + HOST + ":" + hq.get("b") + "/cam?k=" + encodeURIComponent(K) + "&s=" + encodeURIComponent(S) : "";
   var CHROMIUM = !!(navigator.userAgentData && navigator.userAgentData.brands &&
     navigator.userAgentData.brands.some(function (b) { return /Chromium/.test(b.brand); }));
+  var UA = navigator.userAgent || "";
+  var BROWSER = /SamsungBrowser/.test(UA) ? "Samsung Internet" : /EdgA/.test(UA) ? "Edge" :
+                /Firefox/.test(UA) ? "Firefox" : /Chrome/.test(UA) ? "Chrome" : "your browser";
   var CID = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);   // this page's own id
   var v = document.getElementById("v");
   var msg = document.getElementById("msg");
@@ -527,11 +530,17 @@
       body: "<p>This browser couldn't make the quick connection. Not every browser supports it yet " +
             "(Chrome does). The backup connection goes straight to the laptop instead.</p>" + WARN_HTML,
       buttons: [["Use backup connection", "backup", true], ["Try the quick way again", "connect"]],
-      small: "Still stuck? Make sure this phone is on the same Wi-Fi as the laptop and HEMA Replay is open." },
+      small: "Still stuck? Make sure this phone is on the same Wi-Fi as the laptop and HEMA Replay is open. " +
+             "On newer Android phones, also check Settings &gt; Apps &gt; " + BROWSER + " &gt; Permissions, and " +
+             "set Nearby devices to Allow." },
     unreachable: { title: "Can't reach the laptop",
       body: "<p>The phone tried the laptop but got no answer.</p><ul>" +
             "<li>Is this phone on the <b>same Wi-Fi</b> as the laptop?</li>" +
             "<li>Is HEMA Replay open, with this camera set to <b>Phone</b>?</li>" +
+            "<li><b>Newer Android phones</b> block browsers from the local network until you allow it. Open " +
+            "the phone's <b>Settings &gt; Apps &gt; " + BROWSER + " &gt; Permissions</b>, set " +
+            "<b>Nearby devices</b> to <b>Allow</b>, then close " + BROWSER + " completely (swipe it away) " +
+            "and scan the QR code again.</li>" +
             "<li>Guest or public Wi-Fi often blocks devices from seeing each other. " +
             "Try the laptop's Mobile hotspot.</li></ul>",
       buttons: [["Try again", "connect", true], ["Use backup connection", "backup"]] },
